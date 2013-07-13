@@ -1,7 +1,7 @@
 tmce-editor-widget
 ==================
 
-Tiny mce jquery plugin widget for yii
+Tinymce jquery plugin widget for yii
 How to install.
 1) Put tinymce 4 into assets/tinymce folder
 2) For multilanguage support put language pack into assets/tinymce folder.
