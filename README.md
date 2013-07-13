@@ -7,6 +7,7 @@ How to install.
 2) For multilanguage support put language pack into assets/tinymce folder.
 How to use
 View:
+```php
 $this->widget('ext.tmce-widget.TMCEInput',array(
 	'model'=>$model,
 	'attribute'=>'attribute',
@@ -26,3 +27,4 @@ $this->widget('ext.tmce-widget.TMCEInput',array(
 	// language=>'ru'
 	//
 ));
+```
