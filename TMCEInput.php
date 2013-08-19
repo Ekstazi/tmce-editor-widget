@@ -79,7 +79,7 @@ class TMCEInput extends CInputWidget
 	 * If string use as tagName for inline input. Otherwise use standart textarea
 	 * @var bool
 	 */
-	public $inline='div';
+	public $inline=false;
 
 	/**
 	 * Hidden options. Used for hidden field in inline mode
