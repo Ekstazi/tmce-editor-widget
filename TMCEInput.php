@@ -7,8 +7,6 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Yii::setPathOfAlias(TMCEInput::EXT_ALIAS,dirname(__FILE__));
-
 class TMCEInput extends CInputWidget
 {
 	/**
@@ -197,3 +195,5 @@ class TMCEInput extends CInputWidget
 
 	}
 }
+
+Yii::setPathOfAlias(TMCEInput::EXT_ALIAS,dirname(__FILE__));
