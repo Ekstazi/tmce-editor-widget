@@ -6,6 +6,7 @@
  * Time: 23:56
  * To change this template use File | Settings | File Templates.
  */
+Yii::setPathOfAlias('tinymce',dirname(__FILE__));
 
 class TMCEInput extends CInputWidget
 {
@@ -27,9 +28,9 @@ class TMCEInput extends CInputWidget
 	const MODE_CUSTOM='custom';
 
 	/**
-	 * Alias for extension
+	 * Alias for extension package
 	 */
-	const EXT_ALIAS='ext.e.tinymce';
+	const PACKAGE_ALIAS='tinymce';
 
 	/**
 	 * Default options presets, merged into user options
@@ -40,7 +41,7 @@ class TMCEInput extends CInputWidget
 			'plugins'=>array(
 				"advlist autolink lists link image charmap print preview anchor",
 				"searchreplace visualblocks code fullscreen",
-				"insertdatetime media table contextmenu paste moxiemanager"
+				"insertdatetime media table contextmenu paste"
 			),
 			'toolbar'=> "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify |
 				bullist numlist outdent indent | link image",
@@ -50,7 +51,7 @@ class TMCEInput extends CInputWidget
 				"advlist autolink lists link image charmap print preview hr anchor pagebreak",
 				"searchreplace wordcount visualblocks visualchars code fullscreen",
 				"insertdatetime media nonbreaking save table contextmenu directionality",
-				"emoticons template paste textcolor moxiemanager"
+				"emoticons template paste textcolor"
 			),
     		'toolbar1'=>"insertfile undo redo | styleselect | bold italic |
     			alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
@@ -72,13 +73,13 @@ class TMCEInput extends CInputWidget
 	 * Current language. If false use default, if null then autodetect
 	 * @var bool
 	 */
-	public $language=false;
+	public $language;
 
 	/**
 	 * If string use as tagName for inline input. Otherwise use standart textarea
 	 * @var bool
 	 */
-	public $inline=false;
+	public $inline='div';
 
 	/**
 	 * Hidden options. Used for hidden field in inline mode
@@ -90,7 +91,7 @@ class TMCEInput extends CInputWidget
 	 * TMCE options
 	 * @var
 	 */
-	public $options;
+	public $options=array();
 
 	/**
 	 * @var array supported languages
@@ -110,8 +111,8 @@ class TMCEInput extends CInputWidget
 		list(,$id)=$this->resolveNameID();
 		/** @var $cs CClientScript */
 		$cs=\Yii::app()->clientScript;
-		$cs->addPackage(self::EXT_ALIAS,array(
-	      'basePath'=>self::EXT_ALIAS.'.assets',
+		$cs->addPackage(self::PACKAGE_ALIAS,array(
+	      'basePath'=>'tinymce.assets',
 	      'js'=>array(
 			  'tinymce/tinymce.min.js',
 			  'tinymce/jquery.tinymce.min.js'
@@ -119,12 +120,12 @@ class TMCEInput extends CInputWidget
 	      'depends'=>array('jquery'),
 		));
 		if($this->options['hidden_input_id']){
-			$cs->packages[self::EXT_ALIAS]['js'][]='jquery.inlineTMCE.js';
+			$cs->packages[self::PACKAGE_ALIAS]['js'][]='jquery.inlineTMCE.js';
 			$method='inlineTMCE';
 		}else
 			$method='tinymce';
-		$cs->registerPackage(self::EXT_ALIAS);
-		$cs->registerScript(self::EXT_ALIAS.'_'.$id,"$('#$id').$method(".CJavaScript::encode($this->options).")");
+		$cs->registerPackage(self::PACKAGE_ALIAS);
+		$cs->registerScript(self::PACKAGE_ALIAS.'_'.$id,"$('#$id').$method(".CJavaScript::encode($this->options).")");
 	}
 
 	/**
@@ -135,13 +136,13 @@ class TMCEInput extends CInputWidget
 		list($name,$id)=$this->resolveNameID();
 
 		$this->options=array_merge($this->options,self::$defaults[$this->mode]);
-
+		$this->htmlOptions['id']=$id;
 		// prepare inline mode if enabled
 		$this->options['inline']=!empty($this->inline);
 		if(!empty($this->inline)){
 			$id="hidden_$id";
 			// first auto options, then user
-			$this->hiddenOptions=array_merge(compact($name,$id),$this->hiddenOptions);
+			$this->hiddenOptions=array_merge(compact('name','id'),$this->hiddenOptions);
 			// remove unused options for inline element if preset
 			unset($this->htmlOptions['name']);
 			$this->options['hidden_input_id']="#$id";
@@ -185,7 +186,7 @@ class TMCEInput extends CInputWidget
 				CHtml::textArea($this->name,$this->value,$this->htmlOptions);
 		}else {
 			// for hidden field
-			echo CHtml::tag($this->inline,$this->htmlOptions,'');
+			echo CHtml::tag($this->inline,$this->htmlOptions,'kkk');
 
 			echo $this->hasModel() ?
 				CHtml::activeHiddenField($this->model,$this->attribute,$this->hiddenOptions) :
@@ -196,4 +197,3 @@ class TMCEInput extends CInputWidget
 	}
 }
 
-Yii::setPathOfAlias(TMCEInput::EXT_ALIAS,dirname(__FILE__));

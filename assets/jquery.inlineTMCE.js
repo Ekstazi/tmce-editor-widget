@@ -8,10 +8,12 @@
 (function($){
     function onSetup(ed)
     {
-        ed.setContent($(ed.settings.hidden_input_id).val());
-        ed.on('change submit',function(){
-            $(this.settings.hidden_input_id).val(this.getContent());
-        })
+        ed.on("init",function(e) {
+            ed.setContent($(ed.settings.hidden_input_id).val());
+            ed.on('change submit',function(){
+                $(this.settings.hidden_input_id).val(this.getContent());
+            })
+        });
     }
     $.fn.inlineTMCE=function(options){
         if(!options.hidden_input_id)
